@@ -18,13 +18,14 @@ def click_filter(driver):
 
 def get_suppliers(driver):
 
+    db = sqlite3.connect('minstroy.db')
+    cursor = db.cursor()
+
     navigation = driver.find_element(By.XPATH, "//a[@class='item'][@type='lastItem']")
     driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'})", navigation)
     
     total_pages = int(navigation.get_attribute("value"))
     current_page = 0
-
-    all_suppliers = []
 
     while current_page != total_pages:
         supliers = driver.find_elements(By.XPATH, "//a[@class='text-blue1 text-xl']/parent::div")
@@ -34,27 +35,18 @@ def get_suppliers(driver):
             address = elem.find_element(By.XPATH, "./div[@class='text-gray6 mb-2.5']").text
             tags = [x.text for x in elem.find_elements(By.XPATH, "./div[@class='flex']/div[@class='mr-3 pl-4 pr-4 p-1 text-xs bg-gray13']")]
             url = elem.find_element(By.XPATH, "./a[@class='text-blue1 text-xl']").get_attribute("href")
-            obj = {
-                "name": name,
-                "address": address,
-                "tags": json.dumps(tags, ensure_ascii=False),
-                "url": url
-            }
-            all_suppliers.append(obj)
 
             print(name, address, tags, url, sep='\n')
             print("-----------------------------------")
 
+            cursor.execute("INSERT INTO urls (name, address, tags, url) VALUES (? , ? , ? , ?)", (name, address, json.dumps(tags, ensure_ascii=False), url))
+
+        db.commit()
         current_page += 1
         next_page = driver.find_element(By.XPATH, "//a[@class='item'][@type='nextItem']")
         time.sleep(5)
         next_page.click()
     
-    return all_suppliers
-
-def insert_to_db(table, data):
-    pass
-
 
 def main():
 
@@ -67,7 +59,7 @@ def main():
     time.sleep(5)
 
     click_filter(driver)
-    urls = get_suppliers(driver)
+    get_suppliers(driver)
 
 
 main()
