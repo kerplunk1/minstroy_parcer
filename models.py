@@ -43,7 +43,7 @@ class Products(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     supplier_id = Column(ForeignKey("suppliers.id"))
     okpd2 = Column(String)
-    name = name = Column(String)
+    name = Column(String)
 
 
 class ConstructionResources(Base):
