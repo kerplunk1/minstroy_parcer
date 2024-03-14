@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.expected_conditions import visibility_of
 import time
 import json
 import sqlite3
@@ -16,13 +18,31 @@ def get_suppliers_info(driver, id):
     return data
     
             
-def click_product_list(driver):
-    product_list = driver.find_element(By.XPATH, "(//div[@class='accordion ui fluid']/div[@class='title'])[2]")
-    driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'})", product_list)
-    product_list.click()
+def open_list(driver, num):
+    the_list = driver.find_element(By.XPATH, f"(//div[@class='accordion ui fluid']/div[@class='title'])[{num}]") # 2 - product, 3 - resourse
+    driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'})", the_list)
+    the_list.click()
+    time.sleep(5)
+
+    
+def click_pagination(driver):
+    active = driver.find_element(By.XPATH, "//")
+    element = active.find_element(By.XPATH, "//div[@class='ui mini pagination menu']/a[4]")
+    driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'})", element)
+    element.click()
+    driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'})", element)
     time.sleep(5)
 
 
+def close_list(driver):
+    the_list = driver.find_element(By.XPATH, "//div[@class='accordion ui fluid']/div[@class='active title']")
+    driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'})", the_list)
+    the_list.click()
+    time.sleep(5)
+
+
+def get_data(driver):
+    pass
 
 def main():
 
@@ -31,7 +51,7 @@ def main():
 
     db = sqlite3.connect('minstroy.db')
     cursor = db.cursor()
-    cursor.execute("""SELECT id, url FROM urls WHERE name = 'ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "АГРОПРОМ"';""")
+    cursor.execute("""SELECT id, url FROM urls WHERE id < 3""")
     urls = cursor.fetchall()
 
     for id, url in urls:
@@ -48,5 +68,13 @@ def main():
         # db.commit()
         print(data)
 
-        click_product_list(driver)
+        open_list(driver, 2)
+        click_pagination(driver)
+        close_list(driver)
+
+        open_list(driver, 3)
+        click_pagination(driver)
+        close_list(driver)
+
+
 main()
