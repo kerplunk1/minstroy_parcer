@@ -1,6 +1,5 @@
-from sqlalchemy.dialects import sqlite
-from sqlalchemy import JSON, Column, Integer, String, ForeignKey, Date, Computed, create_engine
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy import JSON, Column, Integer, String, ForeignKey, create_engine
+from sqlalchemy.orm import DeclarativeBase
 
 
 db_url = "sqlite:///minstroy.db"
@@ -58,7 +57,8 @@ class ConstructionResources(Base):
 
 
 # alembic init alembic
-    # alembic/env.py # ----    
+    # edit alembic/env.py # ----    
 
 # alembic revision --autogenerate -m "first revision"
 # alembic upgrade head
+    
