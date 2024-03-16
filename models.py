@@ -36,6 +36,14 @@ class Suppliers(Base):
     network = Column(String)
 
 
+class Warehouses:
+    __tablename__ = "warehouses"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    supplier_id = Column(ForeignKey("suppliers.id"))
+    name = Column(String)
+    address = Column(String)
+
+
 class Products(Base):
     __tablename__ = "products"
 
