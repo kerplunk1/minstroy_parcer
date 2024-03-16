@@ -156,7 +156,7 @@ def get_resources(supplier_id):
 
 
 
-cursor.execute("""SELECT id, url FROM urls WHERE id = 98""")
+cursor.execute("""SELECT id, url FROM urls""")
 urls = cursor.fetchall()
 
 for supplier_id, url in urls:
