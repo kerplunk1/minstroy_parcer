@@ -1,8 +1,6 @@
 venv
 __pycache__
 minstroy.db
-alembic/versions
-alembic/README
-alembic/script.py.mako
+alembic
 alembic.ini
 suppliers.json
