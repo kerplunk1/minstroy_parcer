@@ -1,8 +1,9 @@
-from sqlalchemy import JSON, Column, Integer, String, ForeignKey, create_engine
+from sqlalchemy import JSON, Column, Integer, String, ForeignKey, Date, func, create_engine
 from sqlalchemy.orm import DeclarativeBase
+from config import settings
 
 
-db_url = "sqlite:///minstroy.db"
+db_url = f"postgresql+psycopg2://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_POTR}/{settings.DB_NAME}"
 engine = create_engine(db_url)
 
 class Base(DeclarativeBase):
@@ -12,6 +13,7 @@ class Urls(Base):
     __tablename__ = "urls"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    parse_date = Column(Date, default=func.current_date())
     name = Column(String, nullable=False)
     address = Column(String, nullable=False)
     tags = Column(JSON)
@@ -22,6 +24,7 @@ class Suppliers(Base):
     __tablename__ = "suppliers"
 
     id = Column(Integer, primary_key=True)
+    parse_date = Column(Date, default=func.current_date())
     full_name = Column(String, nullable=False)
     legal_address = Column(String, nullable=False)
     inn = Column(String, nullable=False)
@@ -39,7 +42,9 @@ class Suppliers(Base):
 
 class Warehouses(Base):
     __tablename__ = "warehouses"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
+    parse_date = Column(Date, default=func.current_date())
     supplier_id = Column(ForeignKey("suppliers.id"))
     name = Column(String)
     address = Column(String)
@@ -49,6 +54,7 @@ class Products(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    parse_date = Column(Date, default=func.current_date())
     supplier_id = Column(ForeignKey("suppliers.id"))
     okpd2 = Column(String)
     name = Column(String)
@@ -58,6 +64,7 @@ class ConstructionResources(Base):
     __tablename__ = "construction_resources"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    parse_date = Column(Date, default=func.current_date())
     supplier_id = Column(ForeignKey("suppliers.id"))
     ksr = Column(String)
     name = Column(String)
@@ -68,6 +75,6 @@ class ConstructionResources(Base):
 # alembic init alembic
     # edit alembic/env.py # ----    
 
-# alembic revision --autogenerate -m "first revision"
+# alembic revision --autogenerate -m "init revision"
 # alembic upgrade head
     
