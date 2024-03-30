@@ -19,6 +19,8 @@ RUN alembic init alembic
 
 COPY env.py ./alembic
 
+COPY models.py .
+
 RUN alembic revision --autogenerate -m "init revision"
 
 RUN alembic upgrade head
