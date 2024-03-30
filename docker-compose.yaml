@@ -24,4 +24,4 @@ services:
     ports:
       - "8000:8000"
     command: >
-      bash -c "uvicorn api:app"
+      bash -c "alembic revision --autogenerate -m 'init revision' && alembic upgrade head && uvicorn api:app"
