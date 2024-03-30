@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./var/lib/postgresql:/var/lib/postgresql
+      - ./var/lib/postgresql/data:/var/lib/postgresql/data
 
   minstroy_api:
     build:
@@ -23,5 +23,5 @@ services:
       - ./:/api
     ports:
       - "8000:8000"
-    command: >
-      bash -c "alembic revision --autogenerate -m 'init revision' && alembic upgrade head && uvicorn api:app"
+    command:
+       - uvicorn api:app
