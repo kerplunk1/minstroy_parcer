@@ -19,16 +19,6 @@ RUN alembic init alembic
 
 COPY env.py ./alembic
 
-COPY models.py .
-
-COPY config.py .
-
-COPY .db_credentials .
-
-RUN alembic revision --autogenerate -m "init revision"
-
-RUN alembic upgrade head
-
 EXPOSE 8000/tcp
 
 EXPOSE 5432/tcp
