@@ -21,6 +21,10 @@ COPY env.py ./alembic
 
 COPY models.py .
 
+COPY config.py .
+
+COPY .db_credentials .
+
 RUN alembic revision --autogenerate -m "init revision"
 
 RUN alembic upgrade head
