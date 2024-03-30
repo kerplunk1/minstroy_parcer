@@ -15,7 +15,7 @@ services:
       - ./var/lib/postgresql/data:/var/lib/postgresql/data
 
   minstroy_api:
-    build: python:3.12.2-bullseye
+    image: python:3.12.2-bullseye
     container_name: minstroy_api
     restart: always
     working_dir: /api
