@@ -72,9 +72,4 @@ class ConstructionResources(Base):
     capacity = Column(String)
 
 
-# alembic init alembic
-    # edit alembic/env.py # ----    
-
-# alembic revision --autogenerate -m "init revision"
-# alembic upgrade head
     

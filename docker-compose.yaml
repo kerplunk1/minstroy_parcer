@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  minstroy_postgres:
+    image: postgres
+    restart: always
+    container_name: minstroy_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: parser
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./var/lib/postgresql:/var/lib/postgresql
+
+  minstroy_api:
+    build:
+      context: .
+    container_name: minstroy_api
+    restart: always
+    volumes:
+      - ./:/api
+    ports:
+      - "8000:8000"
+    command: >
+      bash -c "uvicorn api:app"
